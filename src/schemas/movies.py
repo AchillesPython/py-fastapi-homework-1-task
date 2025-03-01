@@ -1,11 +1,12 @@
 from pydantic import BaseModel, ConfigDict
 from typing import List
+from datetime import date
 
 
 class MovieDetailResponseSchema(BaseModel):
     id: int
     name: str
-    date: str
+    date: datetime.date
     score: float
     genre: str
     overview: str
