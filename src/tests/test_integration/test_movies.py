@@ -1,19 +1,15 @@
-import random
 import pytest
-from sqlalchemy import select, func
-
-from database import MovieModel
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import delete
+from httpx import AsyncClient
+from src.database import MovieModel
 
 
 @pytest.mark.asyncio
-async def test_get_movies_empty_database(client):
-    """
-    Test retrieving movies from an empty database.
+async def test_get_movies_empty_database(db_session: AsyncSession, client: AsyncClient):
+    await db_session.execute(delete(MovieModel))
+    await db_session.commit()
 
-    Expected:
-        - 404 response status code.
-        - JSON response with a "No movies found." error.
-    """
     response = await client.get("/api/v1/theater/movies/")
 
     assert response.status_code == 404

@@ -33,7 +33,7 @@ async def list_movies(
     result_count = await db.execute(stmt_count)
     total_items = result_count.scalar()
 
-    total_pages = math.ceil(total_items / per_page)
+    total_pages = max(math.ceil(total_items / per_page), 1)
 
     stmt_movies = select(MovieModel).offset(offset).limit(per_page)
     result_movies = await db.execute(stmt_movies)
